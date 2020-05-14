@@ -31,7 +31,7 @@ class ListSneakers extends Component {
   render() {
     const { sneakers, isLoading } = this.state;
     return (
-      <div className="container-fluid">
+      <div className="container-fluid p-0">
         <div className="d-flex flex-wrap">
           {sneakers.map((sneaker) => {
             return (

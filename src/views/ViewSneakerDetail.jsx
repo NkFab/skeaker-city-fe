@@ -2,8 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import PropType from 'prop-types';
+import { useParams, useHistory } from 'react-router-dom';
 
 const BASE_URL = 'https://sneaker-city-api.herokuapp.com';
 
@@ -14,7 +13,7 @@ const ViewSneakerDetails = () => {
   const [size, setSize] = useState();
 
   const { id } = useParams();
-  const cartData = [];
+  const history = useHistory();
 
   useEffect(() => {
     axios
@@ -30,6 +29,22 @@ const ViewSneakerDetails = () => {
         setLoading(false);
       });
   }, [id]);
+
+  const addItemCart = (shoeSize, picture, brand, price) => {
+    const oldItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+    const newItem = {
+      id,
+      selectedSize: shoeSize,
+      sneakerImg: picture,
+      sneakerModel: brand,
+      sneakerPrice: price,
+    };
+
+    oldItems.push(newItem);
+
+    localStorage.setItem('cart', JSON.stringify(oldItems));
+  };
 
   if (loading) {
     return <p>Loading.....</p>;
@@ -94,24 +109,38 @@ const ViewSneakerDetails = () => {
             })}
           </p>
           {size && <p>You selected {size}, add to cart</p>}
-
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => {
-              cartData.push({ selectedSize: size, sneaker: id });
-              localStorage.setItem('cart', JSON.stringify(cartData));
-            }}
-          >
-            Add to Cart
-          </button>
+          <div className="d-flex">
+            <div className="m-1">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={addItemCart(
+                  id,
+                  size,
+                  sneaker.main_picture_url[0],
+                  sneaker.brand_name,
+                  sneaker.retail_price_cents,
+                )}
+              >
+                Add to Cart
+              </button>
+            </div>
+            <div className="m-1">
+              <button
+                type="button"
+                className="btn btn-outline-primary"
+                onClick={() => {
+                  history.goBack();
+                }}
+              >
+                Continue Shopping...
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
-};
-ViewSneakerDetails.defaultProps = {
-  modelName: PropType.string.isRequired,
 };
 
 export default ViewSneakerDetails;
