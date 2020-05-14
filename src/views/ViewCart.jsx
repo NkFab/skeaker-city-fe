@@ -2,23 +2,20 @@ import React, { useState, useEffect } from 'react';
 
 const ViewCart = () => {
   const [cart, setCart] = useState([]);
-  const [error, setError] = useState();
 
   useEffect(() => {
-    if (!localStorage.getItem('cart')) {
-      return setError('Nothing in the cart yet.');
-    }
-    return setCart(JSON.parse(localStorage.getItem('cart')));
+    return setCart(
+      JSON.parse(localStorage.getItem('g8h0989h098h08')) || [],
+    );
   }, []);
-
+  console.log(cart);
   return (
     <div className="container">
       <div className="d-flex justify-content-center p-5">
-        <table className="table col-lg-7 col-md-12 col-sm-12">
+        <table className="table col-lg-7 col-md-12 col-sm-12 mt-5">
           <tbody>
-            {error}
             {cart.map((cartElements) => (
-              <tr>
+              <tr key={cartElements.id}>
                 <td>
                   <img
                     src={cartElements.sneakerImg}
@@ -29,15 +26,15 @@ const ViewCart = () => {
                 </td>
                 <td>
                   <small>
-                    <b>{cartElements.sneakerModel}</b>
+                    Model: <b>{cartElements.sneakerModel}</b>
                   </small>
                   <br />
                   <small>
-                    <b>{cartElements.sneakerPrice}</b>
+                    Price: <b>{cartElements.sneakerPrice}</b>
                   </small>
                   <br />
                   <small>
-                    <b>{cartElements.selectedSize}</b>
+                    Selected Size: <b>{cartElements.selectedSize}</b>
                   </small>
                 </td>
                 <td>

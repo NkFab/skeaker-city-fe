@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useHistory } from 'react-router-dom';
+import addItemCart from '../helpers/addToCart';
 
 const BASE_URL = 'https://sneaker-city-api.herokuapp.com';
 
@@ -29,22 +30,6 @@ const ViewSneakerDetails = () => {
         setLoading(false);
       });
   }, [id]);
-
-  const addItemCart = (shoeSize, picture, brand, price) => {
-    const oldItems = JSON.parse(localStorage.getItem('cart')) || [];
-
-    const newItem = {
-      id,
-      selectedSize: shoeSize,
-      sneakerImg: picture,
-      sneakerModel: brand,
-      sneakerPrice: price,
-    };
-
-    oldItems.push(newItem);
-
-    localStorage.setItem('cart', JSON.stringify(oldItems));
-  };
 
   if (loading) {
     return <p>Loading.....</p>;
