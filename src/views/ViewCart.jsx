@@ -1,27 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
-const BASE_URL = 'https://sneaker-city-api.herokuapp.com';
 
 const ViewCart = () => {
-  const [sneakers, setSneakers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [cart, setCart] = useState([]);
   const [error, setError] = useState();
 
-  let cart = [];
-  if (localStorage.getItem('cart')) {
-    cart = JSON.parse(localStorage.getItem('cart'));
-  } else {
-    return <h1>No items in the cart</h1>;
-  }
+  useEffect(() => {
+    if (!localStorage.getItem('cart')) {
+      return setError('Nothing in the cart yet.');
+    }
+    return setCart(JSON.parse(localStorage.getItem('cart')));
+  }, []);
 
-  console.log(sneakers, 'data');
   return (
     <div className="container">
       <div className="d-flex justify-content-center p-5">
-        <div className="jumbotron col-lg-6 mt-2">
-          <img src="" alt="Sneaker pic" height="500" width="500" />
-        </div>
+        <table className="table col-lg-7 col-md-12 col-sm-12">
+          <tbody>
+            {error}
+            {cart.map((cartElements) => (
+              <tr>
+                <td>
+                  <img
+                    src={cartElements.sneakerImg}
+                    alt="Sneaker pic"
+                    height="150"
+                    width="150"
+                  />
+                </td>
+                <td>
+                  <small>
+                    <b>{cartElements.sneakerModel}</b>
+                  </small>
+                  <br />
+                  <small>
+                    <b>{cartElements.sneakerPrice}</b>
+                  </small>
+                  <br />
+                  <small>
+                    <b>{cartElements.selectedSize}</b>
+                  </small>
+                </td>
+                <td>
+                  <button type="button" className="btn btn-danger">
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

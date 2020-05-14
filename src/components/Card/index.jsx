@@ -13,7 +13,6 @@ const Card = ({
   price,
   releaseDate,
 }) => {
-  console.log(model);
   const history = useHistory();
   return (
     <div
